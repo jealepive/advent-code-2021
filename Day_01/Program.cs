@@ -1,7 +1,7 @@
 ﻿using Utils;
 
 string inputPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "input.txt");
-var inputList = ReadIndata.Ints(inputPath);
+var inputList = ReadData.AsInt(inputPath);
 
 //--- Day 1: Sonar Sweep ---
 

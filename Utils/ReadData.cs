@@ -1,8 +1,8 @@
 ﻿namespace Utils
 {
-    public static class ReadIndata
+    public static class ReadData
     {
-        public static List<int> Ints(string path)
+        public static List<int> AsInt(string path)
         {
             var streamReader = File.OpenText(path);
             var list = new List<int>();
@@ -14,7 +14,7 @@
             return list;
         }
 
-        public static List<long> Longs(string path)
+        public static List<long> AsLong(string path)
         {
             var streamReader = File.OpenText(path);
             var list = new List<long>();
@@ -26,7 +26,7 @@
             return list;
         }
 
-        public static List<string> Strings(string path)
+        public static List<string> AsString(string path)
         {
             var streamReader = File.OpenText(path);
             var list = new List<string>();
