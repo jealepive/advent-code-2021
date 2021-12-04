@@ -36,27 +36,21 @@ void PartB()
 
     for (int bitPosition = 0; bitPosition < bitsWidth; bitPosition++)
     {
-        mostCommonBit = GetMostCommonBit(bitPosition, oxygenReport);
-        oxygenReport = oxygenReport.Where(binaryNumber => binaryNumber[bitPosition] == mostCommonBit).ToList();
-
-        if (oxygenReport.Count == 1)
+        if (oxygenReport.Count > 1)
         {
-            oxygenGeneratorRating = oxygenReport[0];
-            break;
+            mostCommonBit = GetMostCommonBit(bitPosition, oxygenReport);
+            oxygenReport = oxygenReport.Where(binaryNumber => binaryNumber[bitPosition] == mostCommonBit).ToList();
+        }
+
+        if (co2Report.Count > 1)
+        {
+            leastCommonBit = GetLeastCommonBit(bitPosition, co2Report);
+            co2Report = co2Report.Where(binaryNumber => binaryNumber[bitPosition] == leastCommonBit).ToList();
         }
     }
 
-    for (int bitPosition = 0; bitPosition < bitsWidth; bitPosition++)
-    {
-        leastCommonBit = GetLeastCommonBit(bitPosition, co2Report);
-        co2Report = co2Report.Where(binaryNumber => binaryNumber[bitPosition] == leastCommonBit).ToList();
-
-        if (co2Report.Count == 1)
-        {
-            co2ScrubberRating = co2Report[0];
-            break;
-        }
-    }
+    oxygenGeneratorRating = oxygenReport[0];
+    co2ScrubberRating = co2Report[0];
 
     var lifeSupportRating = BinaryToDecimal(oxygenGeneratorRating) * BinaryToDecimal(co2ScrubberRating);
 
