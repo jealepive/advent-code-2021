@@ -11,11 +11,11 @@ void PartA()
 {
     var gammaRate = new List<char>();
     var epsilonRate = new List<char>();
-    var onesCountPerBit = new int[bitsWidth];
+    char mostCommonBit;
 
-    for (int i = 0; i < bitsWidth; i++)
+    for (int bitPosition = 0; bitPosition < bitsWidth; bitPosition++)
     {
-        var mostCommonBit = GetMostCommonBit(i, diagnosticReport);
+        mostCommonBit = GetMostCommonBit(bitPosition, diagnosticReport);
         gammaRate.Add(mostCommonBit);
         epsilonRate.Add(mostCommonBit == '1' ? '0' : '1');
     }
@@ -27,6 +27,40 @@ void PartA()
 
 void PartB()
 {
+    var oxygenGeneratorRating = new char[bitsWidth];
+    var co2ScrubberRating = new char[bitsWidth];
+    char mostCommonBit;
+    char leastCommonBit;
+    var oxygenReport = diagnosticReport.ToList();
+    var co2Report = diagnosticReport.ToList();
+
+    for (int bitPosition = 0; bitPosition < bitsWidth; bitPosition++)
+    {
+        mostCommonBit = GetMostCommonBit(bitPosition, oxygenReport);
+        oxygenReport = oxygenReport.Where(binaryNumber => binaryNumber[bitPosition] == mostCommonBit).ToList();
+
+        if (oxygenReport.Count == 1)
+        {
+            oxygenGeneratorRating = oxygenReport[0];
+            break;
+        }
+    }
+
+    for (int bitPosition = 0; bitPosition < bitsWidth; bitPosition++)
+    {
+        leastCommonBit = GetLeastCommonBit(bitPosition, co2Report);
+        co2Report = co2Report.Where(binaryNumber => binaryNumber[bitPosition] == leastCommonBit).ToList();
+
+        if (co2Report.Count == 1)
+        {
+            co2ScrubberRating = co2Report[0];
+            break;
+        }
+    }
+
+    var lifeSupportRating = BinaryToDecimal(oxygenGeneratorRating) * BinaryToDecimal(co2ScrubberRating);
+
+    Console.WriteLine($"Part B: Result is {lifeSupportRating}");
 }
 
 double BinaryToDecimal(IEnumerable<char> binaryNumber)
@@ -38,7 +72,7 @@ char GetMostCommonBit(int bitPosition, IEnumerable<char[]> binaryNumbers)
 {
     var onesCountPerBit = CountOnesOcurrency(bitPosition, binaryNumbers);
 
-    if (onesCountPerBit >= binaryNumbers.Count() / 2)
+    if (onesCountPerBit >= binaryNumbers.Count() - onesCountPerBit)
     {
         return '1';
     }
@@ -50,7 +84,7 @@ char GetLeastCommonBit(int bitPosition, IEnumerable<char[]> binaryNumbers)
 {
     var onesCountPerBit = CountOnesOcurrency(bitPosition, binaryNumbers);
 
-    if (onesCountPerBit <= binaryNumbers.Count() / 2)
+    if (onesCountPerBit >= binaryNumbers.Count() - onesCountPerBit)
     {
         return '0';
     }
@@ -72,4 +106,6 @@ int CountOnesOcurrency(int bitPosition, IEnumerable<char[]> binaryNumbers)
 
     return onesCountPerBit;
 }
+
 PartA();
+PartB();
