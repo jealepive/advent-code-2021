@@ -9,24 +9,24 @@ var bitsWidth = diagnosticReport.First().Length;
 
 void PartA()
 {
+    var gammaRate = new List<char>();
+    var epsilonRate = new List<char>();
     var onesCountPerBit = new int[bitsWidth];
 
-    for (int i = 0; i < diagnosticReport.Count(); i++)
+    for (int i = 0; i < bitsWidth; i++)
     {
-        for (int j = 0; j < bitsWidth; j++)
-        {
-            if (diagnosticReport.ElementAt(i).ElementAt(j) == '1')
-            {
-                onesCountPerBit[j]++;
-            }
-        }
+        var mostCommonBit = GetMostCommonBit(i, diagnosticReport);
+        gammaRate.Add(mostCommonBit);
+        epsilonRate.Add(mostCommonBit == '1' ? '0' : '1');
     }
 
-    var gammaRate = onesCountPerBit.Select(onesCount => onesCount > diagnosticReport.Count() / 2 ? '1' : '0');
-    var epsilonRate = onesCountPerBit.Select(onesCount => onesCount < diagnosticReport.Count() / 2 ? '1' : '0');
     var powerConsumption = BinaryToDecimal(gammaRate) * BinaryToDecimal(epsilonRate);
 
     Console.WriteLine($"Part A: Result is {powerConsumption}");
+}
+
+void PartB()
+{
 }
 
 double BinaryToDecimal(IEnumerable<char> binaryNumber)
@@ -34,4 +34,42 @@ double BinaryToDecimal(IEnumerable<char> binaryNumber)
     return binaryNumber.Select((bit, idx) => bit == '1' ? Math.Pow(2, (binaryNumber.Count() - 1) - idx) : 0).Sum();
 }
 
+char GetMostCommonBit(int bitPosition, IEnumerable<char[]> binaryNumbers)
+{
+    var onesCountPerBit = CountOnesOcurrency(bitPosition, binaryNumbers);
+
+    if (onesCountPerBit >= binaryNumbers.Count() / 2)
+    {
+        return '1';
+    }
+
+    return '0';
+}
+
+char GetLeastCommonBit(int bitPosition, IEnumerable<char[]> binaryNumbers)
+{
+    var onesCountPerBit = CountOnesOcurrency(bitPosition, binaryNumbers);
+
+    if (onesCountPerBit <= binaryNumbers.Count() / 2)
+    {
+        return '0';
+    }
+
+    return '1';
+}
+
+int CountOnesOcurrency(int bitPosition, IEnumerable<char[]> binaryNumbers)
+{
+    var onesCountPerBit = 0;
+
+    for (int i = 0; i < binaryNumbers.Count(); i++)
+    {
+        if (binaryNumbers.ElementAt(i).ElementAt(bitPosition) == '1')
+        {
+            onesCountPerBit++;
+        }
+    }
+
+    return onesCountPerBit;
+}
 PartA();
