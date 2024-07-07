@@ -60,19 +60,19 @@ double BinaryToDecimal(IList<char> binaryNumber) => binaryNumber.Select((bit, id
 
 char GetMostCommonBit(int bitPosition, char[][] binaryNumbers)
 {
-	var onesCountPerBit = CountOnesOcurrency(bitPosition, binaryNumbers);
+	var onesCountPerBit = CountOnesOccurrence(bitPosition, binaryNumbers);
 
 	return onesCountPerBit >= binaryNumbers.Length - onesCountPerBit ? '1' : '0';
 }
 
 char GetLeastCommonBit(int bitPosition, char[][] binaryNumbers)
 {
-	var onesCountPerBit = CountOnesOcurrency(bitPosition, binaryNumbers);
+	var onesCountPerBit = CountOnesOccurrence(bitPosition, binaryNumbers);
 
 	return onesCountPerBit >= binaryNumbers.Length - onesCountPerBit ? '0' : '1';
 }
 
-int CountOnesOcurrency(int bitPosition, char[][] binaryNumbers)
+int CountOnesOccurrence(int bitPosition, char[][] binaryNumbers)
 {
 	var onesCountPerBit = 0;
 
